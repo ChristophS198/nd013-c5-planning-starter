@@ -80,15 +80,15 @@ double BehaviorPlannerFSM::get_look_ahead_distance(const State& ego_state) {
   // using a comfortable deceleration.
   // Christoph: We neglect our current accel_mag and assume to instantaneously brake with
   // magnitude P_MAX_ACCEL, i.e., do not take into account maximum jerk
-  auto look_ahead_distance = VelocityProfileGenerator::calc_distance(velocity_mag, 0.0, -_max_accel);  // <- Fix This
+  auto look_ahead_distance = -velocity_mag*velocity_mag / (-2*_max_accel);  // <- Fix This
 
-  // LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
+  LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
 
   look_ahead_distance =
       std::min(std::max(look_ahead_distance, _lookahead_distance_min),
                _lookahead_distance_max);
 
-  // LOG(INFO) << "Final look_ahead_distance: " << look_ahead_distance;
+  LOG(INFO) << "Final look_ahead_distance: " << look_ahead_distance;
 
   return look_ahead_distance;
 }
